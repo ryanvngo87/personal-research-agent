@@ -4,3 +4,4 @@ sentence-transformers
 python-dotenv
 httpx
 mcp
+streamlit
