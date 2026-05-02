@@ -25,7 +25,7 @@ Be concise. Do not fabricate information beyond what the findings support.
 def synthesize(question: str, agent_results: list[dict]) -> dict:
     all_findings = []
     for r in agent_results:
-        all_findings.extend(r.get("findings", []))
+        all_findings.extend(r.get("raw_findings", []))
 
     summaries = "\n\n".join(
         f"Sub-query: {r.get('sub_query', '')}\nSummary: {r.get('summary', '')}"

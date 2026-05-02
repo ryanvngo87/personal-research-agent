@@ -26,6 +26,8 @@ a JSON object with keys:
 
 def run_sub_query(sub_query: str) -> dict:
     messages = [{"role": "user", "content": sub_query}]
+    tools_called = []
+    raw_findings = []
 
     while True:
         response = _client.messages.create(
@@ -36,11 +38,17 @@ def run_sub_query(sub_query: str) -> dict:
             messages=messages,
         )
 
-        # Collect any tool calls and execute them
         tool_results = []
         for block in response.content:
             if block.type == "tool_use":
                 result = TOOL_HANDLERS[block.name](block.input)
+                tools_called.append(block.name)
+                # Attach source_type to each raw result for citations/scoring
+                if isinstance(result, list):
+                    for item in result:
+                        if isinstance(item, dict):
+                            item.setdefault("source_type", "web" if block.name == "web_search" else "note")
+                            raw_findings.append(item)
                 tool_results.append({
                     "type": "tool_result",
                     "tool_use_id": block.id,
@@ -52,14 +60,17 @@ def run_sub_query(sub_query: str) -> dict:
             messages.append({"role": "user", "content": tool_results})
             continue
 
-        # No more tool calls — extract final text
         final_text = next(
             (b.text for b in response.content if hasattr(b, "text")), "{}"
         )
         try:
-            return json.loads(final_text)
+            parsed = json.loads(final_text)
         except json.JSONDecodeError:
-            return {"sub_query": sub_query, "findings": [], "summary": final_text}
+            parsed = {"sub_query": sub_query, "findings": [], "summary": final_text}
+
+        parsed["tools_called"] = tools_called
+        parsed["raw_findings"] = raw_findings
+        return parsed
 
 
 def run_agent(sub_queries: list[str]) -> list[dict]:

@@ -1,0 +1,58 @@
+[
+  {
+    "id": "eval_001",
+    "question": "What is MCP and what problem does it solve?",
+    "expected_keywords": ["model context protocol", "anthropic", "tools", "server", "client"],
+    "expected_tools": ["chroma_search", "web_search"],
+    "expected_citations": true,
+    "notes": "Core MCP definition — should hit both Chroma notes and web"
+  },
+  {
+    "id": "eval_002",
+    "question": "How does Chroma store and retrieve vectors?",
+    "expected_keywords": ["embedding", "similarity", "vector", "collection", "retrieval"],
+    "expected_tools": ["chroma_search", "web_search"],
+    "expected_citations": true,
+    "notes": "Vector DB fundamentals"
+  },
+  {
+    "id": "eval_003",
+    "question": "What transport protocols does MCP support?",
+    "expected_keywords": ["stdio", "http", "sse", "json-rpc"],
+    "expected_tools": ["chroma_search", "web_search"],
+    "expected_citations": true,
+    "notes": "Technical MCP detail — should appear in notes"
+  },
+  {
+    "id": "eval_004",
+    "question": "What are the three MCP server primitives?",
+    "expected_keywords": ["tools", "resources", "prompts"],
+    "expected_tools": ["chroma_search"],
+    "expected_citations": true,
+    "notes": "Specific fact that should be in local notes"
+  },
+  {
+    "id": "eval_005",
+    "question": "How do agents perform tool calling?",
+    "expected_keywords": ["tool", "function", "call", "input", "output", "schema"],
+    "expected_tools": ["chroma_search", "web_search"],
+    "expected_citations": true,
+    "notes": "Agent mechanics"
+  },
+  {
+    "id": "eval_006",
+    "question": "What is FastMCP and how is it used?",
+    "expected_keywords": ["fastmcp", "decorator", "mcp.tool", "server"],
+    "expected_tools": ["chroma_search"],
+    "expected_citations": true,
+    "notes": "FastMCP detail — should be in local notes"
+  },
+  {
+    "id": "eval_007",
+    "question": "What are common use cases for MCP?",
+    "expected_keywords": ["database", "file", "github", "slack", "knowledge"],
+    "expected_tools": ["chroma_search", "web_search"],
+    "expected_citations": true,
+    "notes": "Broad use-case question"
+  }
+]
