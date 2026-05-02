@@ -2,19 +2,22 @@ import json
 import anthropic
 from app.config import ANTHROPIC_API_KEY
 from tools.chroma_search import chroma_search, TOOL_SCHEMA as CHROMA_SCHEMA
+from tools.web_search import web_search, TOOL_SCHEMA as WEB_SCHEMA
 
 _client = anthropic.Anthropic(api_key=ANTHROPIC_API_KEY)
 
-TOOLS = [CHROMA_SCHEMA]
+TOOLS = [CHROMA_SCHEMA, WEB_SCHEMA]
 
 TOOL_HANDLERS = {
     "chroma_search": lambda inp: chroma_search(inp["query"], inp.get("top_k", 5)),
+    "web_search": lambda inp: web_search(inp["query"], inp.get("count", 5)),
 }
 
 SYSTEM_PROMPT = """\
 You are a research assistant. For each sub-query you receive, use the available
-tools to gather relevant information from the user's personal notes. Call tools
-as needed, then return a JSON object with keys:
+tools to gather relevant information. Use chroma_search for personal notes and
+web_search for current or general information. Call tools as needed, then return
+a JSON object with keys:
   "sub_query": the original sub-query
   "findings": a list of {content, source} objects from tool results
   "summary": a brief synthesis of what you found
